@@ -55,14 +55,18 @@ st.write('')
 
 st.subheader('Time Series Data')
 st.write('')
-fig =  ff.create_table(data.head(10))
-st.write(fig)
+
+if st.button('Display Data'):
+    fig =  ff.create_table(data.head(10))
+    st.write(fig)
 
 st.write('')
 st.write('')
 st.subheader('Time Series Plot')
 st.write('')
-line_graph_2(data, selected_task)
+
+if st.button('Display Plot'):
+    line_graph_2(data, selected_task)
 
 def train_model(data):
     model = Prophet()
@@ -113,6 +117,10 @@ try:
         visualize()
 except:
     st.write('Please select years to be forecasted!')
+
+
+
+
     
 
 
