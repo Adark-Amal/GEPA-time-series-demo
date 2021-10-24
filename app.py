@@ -81,37 +81,38 @@ st.write('')
 st.subheader('Forecasting')
 st.write('')
 
-years = ['2020', '2021', '2022', '2023']
-select_years = st.multiselect('Select years to forecast', years)
+try:
+    years = ['2020', '2021', '2022', '2023']
+    select_years = st.multiselect('Select years to forecast', years)
 
-st.write('')
-st.write('')
-st.write('Forecasted Output')
-forecast_years = pd.DataFrame(select_years)
-forecast_years.columns = ['ds']
-forecast = model.predict(forecast_years)
+    st.write('')
+    st.write('')
+    st.write('Forecasted Output')
+    forecast_years = pd.DataFrame(select_years)
+    forecast_years.columns = ['ds']
+    forecast = model.predict(forecast_years)
 
-figt =  ff.create_table(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
-st.write(figt)
+    figt =  ff.create_table(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']])
+    st.write(figt)
 
+    st.write('')
+    st.write('')
+    st.subheader('Visualize Forecast Output')
+    st.write('')
 
+    def visualize(moodel=model, forecast=forecast):
+        fig1 = plot_plotly(model, forecast)
+        fig1.update_layout(title='Forecast Time Series Plot', title_x=0.5, width=780, height=500)
+        st.plotly_chart(fig1)
 
-st.write('')
-st.write('')
-st.subheader('Visualize Forecast Output')
-st.write('')
+        fig2 = plot_components_plotly(model, forecast)
+        fig2.update_layout(title='Forecast Time Series Components', title_x=0.5, width=780, height=500)
+        st.plotly_chart(fig2)
 
-def visualize(moodel=model, forecast=forecast):
-    fig1 = plot_plotly(model, forecast)
-    fig1.update_layout(title='Forecast Time Series Plot', title_x=0.5, width=780, height=500)
-    st.plotly_chart(fig1)
-
-    fig2 = plot_components_plotly(model, forecast)
-    fig2.update_layout(title='Forecast Time Series Components', title_x=0.5, width=780, height=500)
-    st.plotly_chart(fig2)
-
-if st.button('Show Plots'):
-    visualize()
+    if st.button('Show Plots'):
+        visualize()
+except:
+    st.write('Please select years to be forecasted!')
     
 
 
